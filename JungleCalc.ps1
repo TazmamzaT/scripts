@@ -1,13 +1,14 @@
-function Get-ML {
+function Get-ML
+{
     param (
-        [double]$gallon,
-        [double]$oz
+        [double] $gallon,
+        [double] $oz
     )
     return ($gallon * 3785) + ($oz * 29.574)
 }
 
-$AbvFormat = "{0:#0.0% ABV}"
-$GallonFormat = "{0:#,##0.0 gallon(s)}"
+$AbvFormat = '{0:#0.0% ABV}'
+$GallonFormat = '{0:#,##0.0 gallon(s)}'
 
 $Juice = [Juice]::new()
 $Juice.Components += [Component]::new('Cranberry Juice', (Get-ML -oz 16))
@@ -22,13 +23,15 @@ Write-Output $Juice.Components | Format-Table
 Write-Output "$($AbvFormat -f $Juice.GetAbv()); $($GallonFormat -f $Juice.GetTotalLiquidGallons())`n"
 
 # Classes
-class Juice{
+class Juice
+{
     [Component[]] $Components
 
     [double] GetTotalLiquidML()
     {
         $totalliquid = 0
-        foreach($liquid in $this.Components){
+        foreach ($liquid in $this.Components)
+        {
             $totalliquid += $liquid.VolumeML
         }
         return $totalliquid
@@ -39,10 +42,12 @@ class Juice{
         return $this.GetTotalLiquidML() / 3785
     }
 
-    [double] GetAbv(){
+    [double] GetAbv()
+    {
         $totalbooze = 0
 
-        foreach($liquid in $this.Components){
+        foreach ($liquid in $this.Components)
+        {
             if ($liquid.GetType() -eq [BoozeComponent])
             {
                 $totalbooze += $liquid.GetAlcoholML()
@@ -52,30 +57,36 @@ class Juice{
     }
 }
 
-class Component{
+class Component
+{
     Component(
-        [string]$name,
-        [double]$volume
-    ){
+        [string] $name,
+        [double] $volume
+    )
+    {
         $this.Name = $name
         $this.VolumeML = $volume
     }
-    [string]$Name
-    [double]$VolumeML
+
+    [string] $Name
+    [double] $VolumeML
 }
 
-class BoozeComponent : Component{
+class BoozeComponent : Component
+{
     BoozeComponent(
-        [string]$name,
-        [double]$volume,
-        [double]$proof
-    ) : base($name, $volume){
+        [string] $name,
+        [double] $volume,
+        [double] $proof
+    ) : base($name, $volume)
+    {
         $this.Proof = $proof
     }
 
-    [double]$Proof
+    [double] $Proof
 
-    [double]GetAlcoholML() {
+    [double] GetAlcoholML()
+    {
         return (($this.Proof / 200) * $this.VolumeML)
     }
 }
