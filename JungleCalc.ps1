@@ -1,8 +1,8 @@
 function Get-ML
 {
     param (
-        [double]$gallon,
-        [double]$oz
+        [double] $gallon,
+        [double] $oz
     )
     return ($gallon * 3785) + ($oz * 29.574)
 }
@@ -60,31 +60,32 @@ class Juice
 class Component
 {
     Component(
-        [string]$name,
-        [double]$volume
+        [string] $name,
+        [double] $volume
     )
     {
         $this.Name = $name
         $this.VolumeML = $volume
     }
-    [string]$Name
-    [double]$VolumeML
+
+    [string] $Name
+    [double] $VolumeML
 }
 
 class BoozeComponent : Component
 {
     BoozeComponent(
-        [string]$name,
-        [double]$volume,
-        [double]$proof
+        [string] $name,
+        [double] $volume,
+        [double] $proof
     ) : base($name, $volume)
     {
         $this.Proof = $proof
     }
 
-    [double]$Proof
+    [double] $Proof
 
-    [double]GetAlcoholML()
+    [double] GetAlcoholML()
     {
         return (($this.Proof / 200) * $this.VolumeML)
     }
