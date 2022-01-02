@@ -7,17 +7,40 @@ function Get-ML
     return ($gallon * 3785) + ($oz * 29.574)
 }
 
+function New-Component
+{
+    param (
+        [Parameter]
+        [string] $Name,
+        [double] $Gallon,
+        [double] $Ounce,
+        [double] $Milliliter,
+        [double] $Proof
+    )
+
+    $Milliliter += Get-ML($Gallon, $Ounce)
+
+    if ($null -ne $Proof)
+    {
+        return [BoozeComponent]::new($Name, $Milliliter, $Proof)
+    }
+    else
+    {
+        return [Component]::new($Name, $Milliliter)
+    }
+}
+
 $AbvFormat = '{0:#0.0% ABV}'
 $GallonFormat = '{0:#,##0.0 gallon(s)}'
 
 $Juice = [Juice]::new()
-$Juice.Components += [Component]::new('Cranberry Juice', (Get-ML -oz 16))
-$Juice.Components += [Component]::new('Lemonade', (Get-ML -gallon .25))
-$Juice.Components += [Component]::new('OJ', (Get-ML -gallon .25))
-$Juice.Components += [Component]::new('Fruit Punch', (Get-ML -gallon .25))
+$Juice.Components += New-Component -Name 'Cranberry Juice' -Ounce 16
+$Juice.Components += New-Component -Name 'Lemonade' -Gallon .25
+$Juice.Components += New-Component -Name 'OJ' -Gallon .25
+$Juice.Components += New-Component -Name 'Fruit Punch' -Gallon .25
 
-$Juice.Components += [BoozeComponent]::new('Vodka', 750, 80)
-$Juice.Components += [BoozeComponent]::new('Rum', 750, 80)
+$Juice.Components += New-Component -Name 'Vodka' -Milliliter 750 -Proof 80
+$Juice.Components += New-Component -Name 'Rum' -Milliliter 750 -Proof 80
 
 Write-Output $Juice.Components | Format-Table
 Write-Output "$($AbvFormat -f $Juice.GetAbv()); $($GallonFormat -f $Juice.GetTotalLiquidGallons())`n"
