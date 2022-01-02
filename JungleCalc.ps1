@@ -10,7 +10,6 @@ function Get-ML
 function New-Component
 {
     param (
-        [Parameter]
         [string] $Name,
         [double] $Gallon,
         [double] $Ounce,
@@ -18,7 +17,7 @@ function New-Component
         [double] $Proof
     )
 
-    $Milliliter += Get-ML($Gallon, $Ounce)
+    $Milliliter += Get-ML -gallon $Gallon -oz $Ounce
 
     if ($null -ne $Proof)
     {
