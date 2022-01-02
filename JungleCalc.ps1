@@ -7,8 +7,8 @@ function Get-ML
     return ($gallon * 3785) + ($oz * 29.574)
 }
 
-$AbvFormat = "{0:#0.0% ABV}"
-$GallonFormat = "{0:#,##0.0 gallon(s)}"
+$AbvFormat = '{0:#0.0% ABV}'
+$GallonFormat = '{0:#,##0.0 gallon(s)}'
 
 $Juice = [Juice]::new()
 $Juice.Components += [Component]::new('Cranberry Juice', (Get-ML -oz 16))
