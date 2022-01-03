@@ -12,7 +12,7 @@ $consolidatedtransactions = [TransactionConcise]@{}
 
 foreach($transaction in $transactionsraw)
 {
-    $consolidatedtransactions += @{$transaction.Description; $transaction.Debit}
+    $consolidatedtransactions += @{Descrption = $transaction.Description; Debit = $transaction.Debit}
 }
 
 
